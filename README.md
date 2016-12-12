@@ -20,8 +20,8 @@ rejected by a reviewer.
 Users can submit metadata regarding an image (for example, to suggest a better description for a given image).
 These suggestions are only visible to the submitter and reviewers.  Reviewers approve and reject contributed metadata.
 
-To contribute image data to the live Unified Listing, please visit [http://ul.gpii.net].  To try out the software
-locally, please read the "Developer Documentation" below.
+To contribute image data to the live Unified Listing, please visit [http://ul.gpii.net](http://ul.gpii.net).  To try out
+the software locally, please read the "Developer Documentation" below.
 
 # Developer Documentation
 
