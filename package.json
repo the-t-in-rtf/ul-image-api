@@ -1,0 +1,24 @@
+{
+  "name": "ul-image-api",
+  "version": "1.0.0",
+  "description": "An API for associating images with Unified Listing entries.",
+  "main": "index.js",
+  "author": "Tony Atkins <tony@raisingthefloor.org>",
+  "license": "BSD-3-Clause",
+  "repository": "https://github.com/the-t-in-rtf/ul-image-api",
+  "dependencies": {
+    "gpii-express": "1.0.1",
+    "infusion": "2.0.0-dev.20161027T155641Z.0bcd507"
+  },
+  "devDependencies": {
+    "eslint": "3.10.2",
+    "eslint-config-fluid": "1.0.0",
+    "fluid-grunt-eslint": "18.1.2",
+    "grunt": "1.0.1",
+    "grunt-jsonlint": "1.1.0",
+    "istanbul": "0.4.5",
+    "kettle": "1.2.2",
+    "node-jqunit": "1.1.4",
+    "request": "2.79.0"
+  }
+}
