@@ -35,7 +35,8 @@ In addition to checking HTTP status codes, you can use the `isError` property to
     + `source` (required) ... The data source (see "Source Permissions" above) to associate this image with.
 
 Add a single image file that is associated with the Unified Listing with the unique identifier `uid`, and with a given
- data source (see above).  You must be logged in and have permission to write `s:ource` (see "Source Permissions" above).
+data source (see above).  You must be logged in and have permission to write to `:source` (see "Source Permissions"
+above).
 
 When uploading a file, the payload must be transmitted using [multipart/form-data](https://www.w3.org/TR/html401/interact/forms.html#h-17.13.4.2)
 encoding.  You are expected to provide file content in a variable named `file`.  The file must be a JPEG, PNG, GIF or
