@@ -27,11 +27,11 @@ locally, please read the "Developer Documentation" below.
 
 ## The API
 
-The API provides a series of REST inputs.  For details regarding the endpoints, their accepted input, and their return
+The API provides a series of REST endpoints.  For details regarding the endpoints, their accepted inputs, and their return
 values, see [docs/api-rest-docs.md](the API documentation).
 
 The API is built as a series of [Fluid components](http://fluidproject.org/). For more information, see
-[docs/api-component-docs.md](the API component documentation).  In addition, the API is built using the following key
+[the API component documentation](docs/api-component-docs.md).  In addition, the API is built using the following key
 libraries:
 
 1. [Sharp](http://sharp.dimens.io/), for image resizing.
@@ -55,6 +55,6 @@ The demo includes the user management functions required, and two sample users:
 
 This package provides reference front-end components designed to work with the API.  The live API provides 
 [CORS headers](https://www.w3.org/TR/cors/) that allow the API to be used from scripts running on third-party sites. 
-So, you can use the components in this package on your own site.  See [docs/api-client-docs.md](the API client documentation)
+So, you can use the components in this package on your own site.  See [the API client documentation](docs/api-client-docs.md)
 for details.
 
