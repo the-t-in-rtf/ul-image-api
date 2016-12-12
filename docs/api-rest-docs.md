@@ -4,6 +4,7 @@ This package provides a [REST API](https://en.wikipedia.org/wiki/Representationa
 using server-side scripts or client-side components.  Read the full documentation below for more details about the
 available endpoints, their accepted input, and their return values.
 
+
 # Source Permissions
 
 To add content using the image API, you must have an account in the Unified Listing.  You can create an account yourself,
@@ -12,6 +13,7 @@ see the [user management documentation](https://ul.gpii.net/api/user/) for detai
 Individual contributors are expected to contribute new image data to their own "source", which consists of a tilde (~)
 followed by their username, as in `~username`.  Reviewers and moderators review incoming images, and make them visible
 via the "unified" data source.
+
 
 # Error Messages
 
@@ -27,6 +29,7 @@ error, as in:
 ```
 
 In addition to checking HTTP status codes, you can use the `isError` property to determine if a response was successful.
+
 
 # `POST /api/images/file/:uid/:source`
 
@@ -73,6 +76,7 @@ If your submission is accepted, you will receive a JSON response that looks some
 The response includes the `image_id` of the new image, which you can use with the `GET /api/images/file/:uid/:source/:image_id`
 endpoint (see below).
 
+
 # `GET /api/images/:source`
 
 + HTTP Headers
@@ -85,6 +89,7 @@ Retrieve all image metadata (including URLs that can be used to retrieve file co
 have permission to view records associated with `:source` (see "Source Permissions" above).  If the HTTP `Accept` header
 is set to `application/json`, a JSON record will be returned.  Otherwise, a rendered HTML page will be returned.  If the
 user is logged in and has permission to write to `:source`, this page will contain controls to add or delete images.
+
 
 # `GET /api/images/:source/:uid`
 
@@ -102,6 +107,7 @@ If the user is logged in, this page will include controls to contribute metadata
 permission to write to `:source`, contributions will be made to `:source` directly.  Otherwise, the user will save
 contributions to their own data source, e. g. `~username`.
 
+
 # `GET /api/images/file/:uid/:source/:image_id{?height&width}`
 
 Retrieve a single image file.  You must have permission to view records associated with `:source` (see "Source Permissions" above).
@@ -118,6 +124,7 @@ Retrieve a single image file.  You must have permission to view records associat
 If both `height` and `width` are specified, the image will be scaled proportionately and mounted on a background with that
 exact size.  See [the Sharp documentation](http://sharp.dimens.io/en/stable/api/#embed) for details.
 
+
 # `HEAD /api/images/file/:uid/:source/:image_id{?height&width}`
 
 Returns just the HTTP request headers for a given image, including:
@@ -125,14 +132,17 @@ Returns just the HTTP request headers for a given image, including:
 This endpoint is intended to allow browsers to compare an image to their cache, to avoid downloading the same image
 repeatedly.  Accepts the same URL and query parameters as `GET /api/images/file/:uid/:image_id` (see above).
 
+
 # `PUT /api/images/file/:uid/:source/:image_id`
 
 Update an existing image file.  Allows the same inputs as a `POST` operation.
+
 
 # `DELETE /api/images/file/:uid/:source/:image_id`
 
 Remove a single existing image file.  You must have permission to write to `:source` (see "Source Permissions" above) to
 use this endpoint.
+
 
 # `POST /api/images/metadata/:uid/:source`
 
@@ -151,6 +161,7 @@ JSON payload, the following fields are supported:
 | `filename`               | `{String}` | The name of this file.  When uploading files, this must exactly match the filename of the corresponding file in the `files` variable. |
 | `uri`                    | `{URI}`    | The URI where the original image is hosted.  This is optional when uploading a file, but required when adding an image using a remote URI. |
 
+
 # `GET /api/images/metadata/:uid/:source/:image_id`
 
 + URL Parameters
@@ -160,6 +171,7 @@ JSON payload, the following fields are supported:
 
 Retrieve the metadata associated with a single image file and source.
 
+
 # `PUT /api/images/metadata/:uid/:source/:image_id`
 
 + URL Parameters
@@ -167,7 +179,27 @@ Retrieve the metadata associated with a single image file and source.
     + `source` (required) ... The data source (see "Source Permissions" above) to associate this image with.
     + `image_id` (required) ... The unique ID of the image.
 
-Update existing metadata associated with a single image file and source.
+Update existing metadata associated with a single image file and source.  Accepts the same fields as `POST /api/images/metadata/:uid/:source`
+(see above), but requires a `status` field to be set.
+
+| Field                    | Type       | Description |
+| ------------------------ | ---------- | ----------- |
+| `status` (required)      | `{String}` | The status field indicates which step in the workflow the product is currently at.  See below for more details. |
+
+
+The following table describes the allowed statuses and when they are to be used.
+
+| Status         | Description |
+| -------------- | ----------- |
+| `new`          | The updated image metadata has new changes which have not been reviewed.  Contributors are only allowed to update records with this status. |
+| `approved`     | The image has been reviewed and approved for use in product listings. This status may only be set by reviewers. |
+| `deleted`      | The image has been flagged for deletion by either the contributor or a reviewer. |
+| `verified`     | The image has been verified as appropriate by the product manufacturer. This status may only be set by reviewers. |
+| `rejected`     | The image has been reviewed and rejected for use in product listings. This status may only be set by reviewers. |
+
+Even within their own "source" (see above), contributors can only update "new" records that have not already been
+reviewed.
+
 
 # `DELETE /api/images/metadata/:uid/:source/:image_id`
 
@@ -176,7 +208,9 @@ Update existing metadata associated with a single image file and source.
     + `source` (required) ... The data source (see "Source Permissions" above) to associate this image with.
     + `image_id` (required) ... The unique ID of the image.
 
-Delete the metadata associated with a single image file and source.
+Delete the metadata associated with a single image file and source.  Equivalent to calling `PUT /api/images/metadata/:uid/:source/:image_id`
+with the status `deleted`.
+
 
 # `GET /api/images/gallery/:uid`
 
@@ -216,6 +250,7 @@ Otherwise, a rendered HTML page will be returned.  If the user is logged in, thi
 contribute metadata and new images.   If the user is a reviewer, this page will include controls to change which
 images are displayed, and the order in which they are displayed.
 
+
 # `PUT /api/images/gallery/:uid`
 
 Update the gallery for a particular `uid`.  Used by reviewers to control which images appear, and in what order.
@@ -227,6 +262,7 @@ Accepts a JSON payload that consists of an array of image ids, as in:
 
 These must correspond to images that exist, and that have metadata associated with the "unified" source.
 
+
 # `DELETE /api/images/gallery/:uid`
 
 + URL Parameters
@@ -235,25 +271,29 @@ These must correspond to images that exist, and that have metadata associated wi
 Delete a custom "gallery" definition.  This will reset the output of `GET /api/images/gallery/:uid` to the defaults
 (see above).
 
+
 # `PUT /api/images/approve`
 
 + JSON Body Parameters
     + `uid` (required) ... The unique ID of the Unified Listing entry associated with this image.
-    + `source` (required) ... The data source (see "Source Permissions" above) to associate this image with.
+    + `source` (required) ... The data source (see "Source Permissions" above) of the contributed image.
     + `image_id` (required) ... The unique ID of the image.
 
-Approve a contributed image file and/or metadata and copy it to the "unified" data source.  This endpoint can only be
-accessed by reviewers.
+Approve a contributed image file and copy its metadata to the "unified" data source.  If a custom gallery exists
+for this `uid`, the new image will be added to the end of the gallery.  This endpoint can only be accessed by reviewers.
+
 
 # `PUT /api/images/reject`
 
 + JSON Body Parameters
     + `uid` (required) ... The unique ID of the Unified Listing entry associated with this image.
-    + `source` (required) ... The data source (see "Source Permissions" above) to associate this image with.
+    + `source` (required) ... The data source (see "Source Permissions" above) of the contributed image.
     + `image_id` (required) ... The unique ID of the image.
 
-Reject a contributed image file and/or metadata.  This will take it out of the list of records to be reviewed, and will
-make it clear to the contributor that their submission has been rejected.  This endpoint can only be accessed by reviewers.
+Reject a contributed image file and/or metadata.  This is equivalent to calling `PUT /api/images/metadata/:uid/:source/:image_id`
+with the status `rejected`.  Rejecting a record takes it out of the list of records to be reviewed, and makes it clear
+to the contributor that their submission has been rejected.  This endpoint can only be accessed by reviewers.
+
 
 # `GET /api/images/reports`
 
@@ -267,6 +307,7 @@ Displays a rendered HTML page with links to all available reports.
 Retrieve the list of images and metadata contributed by the currently logged in user.  If the HTTP `Accept` header is
 set to `application/json`, a JSON payload listing the contributions will be returned.  Otherwise, a rendered HTML page
 will be returned.
+
 
 # `GET /api/images/reports/reviewers{?includeReviewed}`
 
