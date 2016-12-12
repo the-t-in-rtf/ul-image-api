@@ -5,7 +5,7 @@ var gpii  = fluid.registerNamespace("gpii");
 
 fluid.registerNamespace("gpii.ul.api.images");
 
-require("./src/js/index.js");
+require("./src/js/server/index.js");
 
 fluid.module.register("gpii-ul-image-api", __dirname, require);
 
