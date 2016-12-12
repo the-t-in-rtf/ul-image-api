@@ -28,7 +28,7 @@ the software locally, please read the "Developer Documentation" below.
 ## The API
 
 The API provides a series of REST endpoints.  For details regarding the endpoints, their accepted inputs, and their return
-values, see [docs/api-rest-docs.md](the API documentation).
+values, see [the API documentation](docs/api-rest-docs.md).
 
 The API is built as a series of [Fluid components](http://fluidproject.org/). For more information, see
 [the API component documentation](docs/api-component-docs.md).  In addition, the API is built using the following key
