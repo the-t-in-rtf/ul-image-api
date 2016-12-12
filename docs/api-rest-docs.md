@@ -127,7 +127,7 @@ repeatedly.  Accepts the same URL and query parameters as `GET /api/images/file/
 
 # `PUT /api/images/file/:uid/:source/:image_id`
 
-Update an existing image file and/or its associated metadata.  Allows the same inputs as a `POST` operation.
+Update an existing image file.  Allows the same inputs as a `POST` operation.
 
 # `DELETE /api/images/file/:uid/:source/:image_id`
 
