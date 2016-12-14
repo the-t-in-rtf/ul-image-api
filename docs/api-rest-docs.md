@@ -31,11 +31,12 @@ error, as in:
 In addition to checking HTTP status codes, you can use the `isError` property to determine if a response was successful.
 
 
-# `POST /api/images/file/:uid/:source`
+# `POST /api/images/file/:uid/:source/:image_id`
 
 + URL Parameters
     + `uid` (required) ... The unique ID of the Unified Listing entry associated with this image.
     + `source` (required) ... The data source (see "Source Permissions" above) to associate this image with.
+    + `image_id` (required) .. The ID of this image, as returned by `GET /api/images/file/gallery` (see below) or `POST /api/images/metadata/:uid/:source` (see below).
 
 Add a single image file that is associated with the Unified Listing with the unique identifier `uid`, and with a given
 data source (see above).  You must be logged in and have permission to write to `:source` (see "Source Permissions"
@@ -63,18 +64,9 @@ The payload should look something like:
    --AaB03x--
 ```
 
-If your submission is accepted, you will receive a JSON response that looks something like:
-
-```
-{
-  "message": "You have successfully submitted an image",
-  "source":  "~username",
-  "image_id": "12345"
-}
-```
-
-The response includes the `image_id` of the new image, which you can use with the `GET /api/images/file/:uid/:source/:image_id`
-endpoint (see below).
+Before you can use this endpoint, you must have successfully submitted metadata for the image using the
+`POST /api/images/metadata/:uid/:source` endpoint (see below).  When you have successfully submitted metadata, the
+response will include the `image_id` of the new image needed to use this endpoint.
 
 
 # `GET /api/images/:source`
@@ -108,7 +100,7 @@ permission to write to `:source`, contributions will be made to `:source` direct
 contributions to their own data source, e. g. `~username`.
 
 
-# `GET /api/images/file/:uid/:source/:image_id{?height&width}`
+# `GET /api/images/file/:uid/:source/{:width/}:image_id`
 
 Retrieve a single image file.  You must have permission to view records associated with `:source` (see "Source Permissions" above).
 
@@ -116,10 +108,7 @@ Retrieve a single image file.  You must have permission to view records associat
     + `uid` (required) ... The unique ID of the Unified Listing entry associated with this image.
     + `source` (required) ... The data source (see "Source Permissions" above) to associate this image with.
     + `image_id` (required) .. The ID of this image, as returned by `GET /api/images/file/gallery` (see below) or `POST /api/images/file/:uid` (see above).
-
-+ Query Parameters
-    + `height` (optional, number) ... The desired height of the image.  If `height` is supplied and ``width` is omitted, the width will be determined using the aspect ratio of the original image.
-    + `width` (optional, number) ... The desired width of the image.  If `width` is supplied and `height` is omitted, the height will be determined using the aspect ratio of the original image.
+    + `width` (optional, number) ... The desired width of the image.  The height will be determined using the aspect ratio of the original image.
 
 If both `height` and `width` are specified, the image will be scaled proportionately and mounted on a background with that
 exact size.  See [the Sharp documentation](http://sharp.dimens.io/en/stable/api/#embed) for details.
@@ -144,24 +133,6 @@ Remove a single existing image file.  You must have permission to write to `:sou
 use this endpoint.
 
 
-# `POST /api/images/metadata/:uid/:source`
-
-+ URL Parameters
-    + `uid` (required) ... The unique ID of the Unified Listing entry associated with this image.
-    + `source` (required) ... The data source (see "Source Permissions" above) to associate this image with.
-
-Add new metadata for an existing image file, including copyright information and descriptions.  You are expected to submit a
-JSON payload, the following fields are supported:
-
-| Field                    | Type       | Description |
-| ------------------------ | ---------- | ----------- |
-| `source` (required)      | `{String}` | The data source for this image description. For individual users, this will typically be `~username`. |
-| `description` (required) | `{String}` | A description of the image.  Will be used to provide alternate text for screen readers. |
-| `copyright` (required)   | `{String}` | The copyright information for this image, which should ideally provide details about the copyright own, the date of the copyright, and the terms of use. |
-| `filename`               | `{String}` | The name of this file.  When uploading files, this must exactly match the filename of the corresponding file in the `files` variable. |
-| `uri`                    | `{URI}`    | The URI where the original image is hosted.  This is optional when uploading a file, but required when adding an image using a remote URI. |
-
-
 # `GET /api/images/metadata/:uid/:source/:image_id`
 
 + URL Parameters
@@ -171,6 +142,24 @@ JSON payload, the following fields are supported:
 
 Retrieve the metadata associated with a single image file and source.
 
+
+# `POST /api/images/metadata/:uid/:source`
+
++ URL Parameters
+    + `uid` (required) ... The unique ID of the Unified Listing entry associated with this image.
+    + `source` (required) ... The data source (see "Source Permissions" above) to associate this image with.
+
+Add new metadata, including copyright information and descriptions.  You are expected to submit a JSON payload, the
+following fields are supported:
+
+| Field                    | Type       | Description |
+| ------------------------ | ---------- | ----------- |
+| `description` (required) | `{String}` | A description of the image.  Will be used to provide alternate text for screen readers. |
+| `copyright` (required)   | `{String}` | The copyright information for this image, which should ideally provide details about the copyright own, the date of the copyright, and the terms of use. |
+
+
+When you have successfully submitted metadata, the  response will include the `image_id` of the new image needed to
+upload a file using the `POST /api/images/file/:uid/:source/:image_id` endpoint (see above).
 
 # `PUT /api/images/metadata/:uid/:source/:image_id`
 
@@ -208,8 +197,8 @@ reviewed.
     + `source` (required) ... The data source (see "Source Permissions" above) to associate this image with.
     + `image_id` (required) ... The unique ID of the image.
 
-Delete the metadata associated with a single image file and source.  Equivalent to calling `PUT /api/images/metadata/:uid/:source/:image_id`
-with the status `deleted`.
+Delete the metadata associated with a single image file and source.  Equivalent to calling the
+`PUT /api/images/metadata/:uid/:source/:image_id` endpoint with the status `deleted`.
 
 
 # `GET /api/images/gallery/:uid`

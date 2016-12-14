@@ -1,0 +1,12 @@
+{
+  "type": "devConfig",
+  "options": {
+    "gradeNames": ["gpii.ul.images.harness"],
+    "listeners": {
+      "onCreate.constructFixtures": {
+        "func": "{that}.events.constructFixtures.fire"
+      }
+    }
+  },
+  "require": ["%ul-image-api/tests/js/lib/test-harness.js"]
+}

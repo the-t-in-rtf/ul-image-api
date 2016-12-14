@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50">
+    <circle cx="25" cy="25" r="20" style="stroke:#000000; stroke-width: 1.5; fill:#abcdef"/>
+    <text x="12" y="36" style="font-size: 36px;">A</text>
+</svg>
