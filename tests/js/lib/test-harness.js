@@ -228,7 +228,7 @@ fluid.defaults("gpii.ul.images.harness", {
                         type: "gpii.express.router.static",
                         options: {
                             priority: "after:session",
-                            path: "/nm",
+                            path: ["/nm", "/modules"],
                             content: "%ul-image-api/node_modules"
                         }
 

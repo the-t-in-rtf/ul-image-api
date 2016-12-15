@@ -18,6 +18,9 @@ fluid.require("%gpii-json-schema");
 fluid.registerNamespace("gpii.ul.images.api.file.read.handler");
 
 require("./file-helpers");
+require("../source-permission-middleware");
+
+// TODO:  Decide how best to handle permission checks, should match what we do in the main UL API.
 
 gpii.ul.images.api.file.read.handler.checkQueryParams = function (that) {
     // Use the same rules to extract the user input as we do during validation.
@@ -87,10 +90,18 @@ fluid.defaults("gpii.ul.images.api.file.read", {
         }
     ],
     components: {
+        // Make sure the user has permission to view (non-unified) image sources.
+        permissionMiddleware: {
+            type: "gpii.ul.images.sourcePermissionMiddleware",
+            options: {
+                priority: "first"
+            }
+        },
         // JSON Schema validation middleware to check for required parameters.
         validationMiddleware: {
             type: "gpii.schema.validationMiddleware",
             options: {
+                priority: "after:permissionMiddleware",
                 schemaDirs: "%ul-image-api/src/schemas",
                 schemaKey:  "file-read-input.json",
                 rules: "{gpii.ul.images.api.file.read}.options.rules",
