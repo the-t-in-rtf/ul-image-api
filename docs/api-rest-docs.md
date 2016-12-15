@@ -108,29 +108,34 @@ permission to write to `:source`, contributions will be made to `:source` direct
 contributions to their own data source, e. g. `~username`.
 
 
-# `GET /api/images/file/:uid/:source/:image_id{?height&width}`
+# `GET /api/images/file/:uid/:source/:image_id`
 
-Retrieve a single image file.  You must have permission to view records associated with `:source` (see "Source Permissions" above).
+Retrieve a single image file at its original resolution.  You must have permission to view records associated with `:source` (see "Source Permissions" above).
 
 + URL Parameters
     + `uid` (required) ... The unique ID of the Unified Listing entry associated with this image.
     + `source` (required) ... The data source (see "Source Permissions" above) to associate this image with.
     + `image_id` (required) .. The ID of this image, as returned by `GET /api/images/file/gallery` (see below) or `POST /api/images/file/:uid` (see above).
 
-+ Query Parameters
-    + `height` (optional, number) ... The desired height of the image.  If `height` is supplied and ``width` is omitted, the width will be determined using the aspect ratio of the original image.
-    + `width` (optional, number) ... The desired width of the image.  If `width` is supplied and `height` is omitted, the height will be determined using the aspect ratio of the original image.
+# `GET /api/images/file/:uid/:source/{:width/}:image_id`
 
-If both `height` and `width` are specified, the image will be scaled proportionately and mounted on a background with that
-exact size.  See [the Sharp documentation](http://sharp.dimens.io/en/stable/api/#embed) for details.
+Retrieve a single image file scaled to `:width` pixels wide.  Has the same permission checks and parameters as
+`GET /api/images/file/:uid/:source/:image_id`, but supports the following additional parameter:
+
++ URL Parameters
+    + `width` (optional, number) ... The desired width of the image.  The height will be determined using the aspect ratio of the original image.
+
+# `HEAD /api/images/file/:uid/:source/:image_id`
+
+Returns just the HTTP headers for a given image at it original resolution.  This endpoint is intended to allow browsers
+to compare an image to their cache, to avoid downloading the same image repeatedly.  Accepts the same URL parameters as
+`GET /api/images/file/:uid/:image_id` (see above).
 
 
-# `HEAD /api/images/file/:uid/:source/:image_id{?height&width}`
+# `HEAD /api/images/file/:uid/:source/{:width/}:image_id
 
-Returns just the HTTP request headers for a given image, including:
-
-This endpoint is intended to allow browsers to compare an image to their cache, to avoid downloading the same image
-repeatedly.  Accepts the same URL and query parameters as `GET /api/images/file/:uid/:image_id` (see above).
+Returns just the HTTP headers for a given image and `:width`.  Accepts the same URL parameters as
+`GET /api/images/file/:uid/:source/{:width/}:image_id` (see above).
 
 
 # `PUT /api/images/file/:uid/:source/:image_id`
@@ -142,6 +147,32 @@ Update an existing image file.  Allows the same inputs as a `POST` operation.
 
 Remove a single existing image file.  You must have permission to write to `:source` (see "Source Permissions" above) to
 use this endpoint.
+
+
+# `GET /api/images/metadata/:uid`
+
++ URL Parameters
+    + `uid` (required) ... The unique ID of the Unified Listing entry associated with this image.
+
+Retrieve all metadata associated with a Unified Listing entry.
+
+
+# `GET /api/images/metadata/:uid/:source`
+
++ URL Parameters
+    + `uid` (required) ... The unique ID of the Unified Listing entry associated with this image.
+    + `source` (required) ... The data source (see "Source Permissions" above) to associate this image with.
+
+Retrieve all metadata associated with a Unified Listing entry and source.
+
+# `GET /api/images/metadata/:uid/:source/:image_id`
+
++ URL Parameters
+    + `uid` (required) ... The unique ID of the Unified Listing entry associated with this image.
+    + `source` (required) ... The data source (see "Source Permissions" above) to associate this image with.
+    + `image_id` (required) ... The unique ID of the image.
+
+Retrieve the metadata associated with a single Unified Listing entry, image file, and source.
 
 
 # `POST /api/images/metadata/:uid/:source`
@@ -229,6 +260,7 @@ If the HTTP `Accept` header is set to `application/json`, a JSON record like the
 ```
 [
   {
+    "uid": "1421059432806-826608318",
     "source": "unified",
     "image_id": "12345",
     "description": "A picture that no one can object to.",
@@ -237,6 +269,7 @@ If the HTTP `Accept` header is set to `application/json`, a JSON record like the
     "uri": "http://server.name/api/images/file/unified/12345"
   },
   {
+    "uid": "1421059432806-826608318",
     "source": "unified",
     "image_id": "12346",
     "description": "Another picture that no one can object to.",
