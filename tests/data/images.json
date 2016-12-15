@@ -2,6 +2,7 @@
   "docs": [
     {
       "uid":         "1421059432806-826608318",
+      "type":        "metadata",
       "source":      "contributor",
       "image_id":    "c.svg",
       "description": "An image of the letter C.",
@@ -11,6 +12,7 @@
     {
       "uid":         "1421059432806-826608318",
       "source":      "contributor",
+      "type":        "metadata",
       "image_id":    "d.svg",
       "description": "An image of the letter D.",
       "copyright":   "Copyright 2016 Raising the Floor International. Licensed under the Creative Commons Attribution 4.0 International License, see https://creativecommons.org/licenses/by/4.0/",
@@ -19,6 +21,7 @@
     {
       "uid":         "1421059432806-826608318",
       "source":      "contributor",
+      "type":        "metadata",
       "image_id":    "e.svg",
       "description": "An image of the letter E.",
       "copyright":   "Copyright 2016 Raising the Floor International. Licensed under the Creative Commons Attribution 4.0 International License, see https://creativecommons.org/licenses/by/4.0/",
@@ -27,6 +30,7 @@
     {
       "uid":         "1421059432806-826608318",
       "source":      "unified",
+      "type":        "metadata",
       "image_id":    "a.svg",
       "description": "An image of the letter A.",
       "copyright":   "Copyright 2016 Raising the Floor International. Licensed under the Creative Commons Attribution 4.0 International License, see https://creativecommons.org/licenses/by/4.0/",
@@ -35,6 +39,7 @@
     {
       "uid":         "1421059432806-826608318",
       "source":      "unified",
+      "type":        "metadata",
       "image_id":    "b.svg",
       "description": "An image of the letter B.",
       "copyright":   "Copyright 2016 Raising the Floor International. Licensed under the Creative Commons Attribution 4.0 International License, see https://creativecommons.org/licenses/by/4.0/",
@@ -43,6 +48,7 @@
     {
       "uid":         "1421059432806-826608318",
       "source":      "unified",
+      "type":        "metadata",
       "image_id":    "c.svg",
       "description": "An image of the letter C.",
       "copyright":   "Copyright 2016 Raising the Floor International. Licensed under the Creative Commons Attribution 4.0 International License, see https://creativecommons.org/licenses/by/4.0/",

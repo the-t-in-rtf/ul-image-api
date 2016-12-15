@@ -7,6 +7,16 @@ require("./file-read.js");
 // TODO: Write these
 // # `POST /api/images/file/:uid/:source`
 // # `PUT /api/images/file/:uid/:source/:image_id`
+/*
+This module supports reading JPEG, PNG, WebP, TIFF, GIF and SVG images.
+Output images can be in JPEG, PNG and WebP formats as well as uncompressed raw pixel data.
+
+webp -> png
+tiff -> jpg
+everything else is preserved unaltered
+
+Scan uploaded images with clamav.
+ */
 // require("./file-update.js");
 
 // TODO: Write these

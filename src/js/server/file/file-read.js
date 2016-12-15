@@ -37,11 +37,7 @@ gpii.ul.images.api.file.read.handler.checkQueryParams = function (that) {
         else {
             that.sendResponse(501, { isError: true, message: "This endpoint has not been implemented yet."});
             // TODO: Implement this
-            // If not, check to see if we are handling a "head" request
-
-            // If we are handling a HEAD request, return the etags, etc. based on the original and the desired height/width.
-
-            // If we are handling a GET request, resize the image, deliver it, then attempt to save it.
+            // Resize the image, save it, then defer to the static middleware.
         }
     }
     // For original unaltered images, defer to the static middleware

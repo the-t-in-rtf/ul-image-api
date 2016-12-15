@@ -341,7 +341,12 @@ fluid.defaults("gpii.ul.images.harness", {
                             path: "/",
                             databases: {
                                 users:  { data: "%ul-image-api/tests/data/users.json" },
-                                images: { data: ["%ul-image-api/tests/data/images.json"] },
+                                images: { data: [
+                                    "%ul-image-api/src/views/gallery.json",
+                                    "%ul-image-api/src/views/metadata.json",
+                                    "%ul-image-api/tests/data/galleries.json",
+                                    "%ul-image-api/tests/data/images.json"
+                                ] },
                                 ul:     { data: ["%ul-image-api/tests/data/ul.json"] }
                             }
                         }
