@@ -1,9 +1,15 @@
 /*
 
-    Provides the `GET /api/images/file/:uid/:source/:image_id{?height&width}` REST endpoint to retrieve a specific image
-    file, and the `HEAD /api/images/file/:uid/:source/:image_id{?height&width}` REST endpoint to retrieve metadata
-    regarding a file.  The latter is used by browsers to check the staleness of their cache.  See the API docs for
-    details.
+    Provides the REST endpoints to retrieve a specific image file:
+
+    * `GET /api/images/file/:uid/:source/:image_id`
+    * `GET /api/images/file/:uid/:source/:width/:image_id`
+
+    Also provides the REST endpoint to retrieve file metadata for a particular file, which allows browsers to check the
+    staleness of their cache.  See the API docs for details.
+
+    * `HEAD /api/images/file/:uid/:source/:image_id`
+    * `HEAD /api/images/file/:uid/:source/:width/:image_id`
 
  */
 "use strict";
@@ -15,14 +21,12 @@ var fs = require("fs");
 fluid.require("%gpii-express");
 fluid.require("%gpii-json-schema");
 
-fluid.registerNamespace("gpii.ul.images.api.file.read.handler");
+fluid.registerNamespace("gpii.ul.api.images.file.read.handler");
 
 require("./file-helpers");
 require("../source-permission-middleware");
 
-// TODO:  Decide how best to handle permission checks, should match what we do in the main UL API.
-
-gpii.ul.images.api.file.read.handler.checkQueryParams = function (that) {
+gpii.ul.api.images.file.read.handler.checkQueryParams = function (that) {
     // Use the same rules to extract the user input as we do during validation.
     var userOptions = fluid.model.transformWithRules(that.options.request, that.options.rules.requestContentToValidate);
 
@@ -30,7 +34,7 @@ gpii.ul.images.api.file.read.handler.checkQueryParams = function (that) {
         // If we have height/width params, check to see if we already have a resized file
         // /api/images/file/:uid/:source/:width/:image_id
         var segments         = [ userOptions.uid, userOptions.source,  userOptions.width, userOptions.image_id ];
-        var resizedFilePath  = gpii.ul.images.api.file.resolvePath(that.options.cacheDir, segments);
+        var resizedFilePath  = gpii.ul.api.images.file.resolvePath(that.options.cacheDir, segments);
 
         // If a resized file exists, defer to the static middleware
         if (fs.existsSync(resizedFilePath)) {
@@ -49,17 +53,17 @@ gpii.ul.images.api.file.read.handler.checkQueryParams = function (that) {
     }
 };
 
-fluid.defaults("gpii.ul.images.api.file.read.handler", {
+fluid.defaults("gpii.ul.api.images.file.read.handler", {
     gradeNames: ["gpii.express.handler"],
     invokers: {
         handleRequest: {
-            funcName: "gpii.ul.images.api.file.read.handler.checkQueryParams",
+            funcName: "gpii.ul.api.images.file.read.handler.checkQueryParams",
             args:     ["{that}"]
         }
     }
 });
 
-fluid.defaults("gpii.ul.images.api.file.read", {
+fluid.defaults("gpii.ul.api.images.file.read", {
     gradeNames: ["gpii.express.router", "gpii.hasRequiredOptions"],
     method: ["get", "head"],
     requiredFields: {
@@ -104,10 +108,10 @@ fluid.defaults("gpii.ul.images.api.file.read", {
                 priority: "after:permissionMiddleware",
                 schemaDirs: "%ul-image-api/src/schemas",
                 schemaKey:  "file-read-input.json",
-                rules: "{gpii.ul.images.api.file.read}.options.rules",
+                rules: "{gpii.ul.api.images.file.read}.options.rules",
                 listeners: {
                     "onSchemasDereferenced.notifyParent": {
-                        func: "{gpii.ul.images.api.file.read}.events.onSchemasDereferenced.fire"
+                        func: "{gpii.ul.api.images.file.read}.events.onSchemasDereferenced.fire"
                     }
                 }
             }
@@ -117,14 +121,14 @@ fluid.defaults("gpii.ul.images.api.file.read", {
             type: "gpii.express.middleware.requestAware",
             options: {
                 priority: "after:validationMiddleware",
-                handlerGrades: ["gpii.ul.images.api.file.read.handler"]
+                handlerGrades: ["gpii.ul.api.images.file.read.handler"]
             }
         },
         static: {
             type:     "gpii.express.router.static",
             priority: "last",
             options: {
-                content: ["{gpii.ul.images.api.file.read}.options.originalsDir", "{gpii.ul.images.api.file.read}.options.cacheDir"]
+                content: ["{gpii.ul.api.images.file.read}.options.originalsDir", "{gpii.ul.api.images.file.read}.options.cacheDir"]
             }
         }
     }

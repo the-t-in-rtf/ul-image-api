@@ -53,7 +53,7 @@ require("./file");
 
 */
 
-fluid.defaults("gpii.ul.images.api", {
+fluid.defaults("gpii.ul.api.images", {
     gradeNames: ["gpii.express.router"],
     path: "/api/images",
     method: "use",
@@ -66,11 +66,11 @@ fluid.defaults("gpii.ul.images.api", {
     },
     components: {
         file: {
-            type: "gpii.ul.images.api.file",
+            type: "gpii.ul.api.images.file",
             options: {
                 listeners: {
                     "onReady.notifyParent": {
-                        func: "{gpii.ul.images.api}.events.onFileReady.fire"
+                        func: "{gpii.ul.api.images}.events.onFileReady.fire"
                     }
                 }
             }

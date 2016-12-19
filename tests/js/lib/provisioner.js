@@ -6,8 +6,8 @@ var gpii  = fluid.registerNamespace("gpii");
 var mkdirp = require("mkdirp");
 var ncp    = require("ncp");
 
-fluid.registerNamespace("gpii.tests.ul.images.api.provisioner");
-gpii.tests.ul.images.api.provisioner.provision = function (that) {
+fluid.registerNamespace("gpii.tests.ul.api.images.provisioner");
+gpii.tests.ul.api.images.provisioner.provision = function (that) {
     var promises = [];
 
     fluid.each(that.options.dataToCopy, function (destDir, sourceDir) {
@@ -39,12 +39,12 @@ gpii.tests.ul.images.api.provisioner.provision = function (that) {
     sequence.then(that.events.onProvisioned.fire, fluid.fail);
 };
 
-gpii.tests.ul.images.api.provisioner.deprovision = function (that) {
+gpii.tests.ul.api.images.provisioner.deprovision = function (that) {
     // TODO: Clear out the cache directory
     // TODO: Clear out the test content
 };
 
-fluid.defaults("gpii.tests.ul.images.api.provisioner", {
+fluid.defaults("gpii.tests.ul.api.images.provisioner", {
     gradeNames: ["fluid.component", "gpii.hasRequiredOptions"],
     dataToCopy: {
         // "source.path": "target.path"
@@ -64,11 +64,11 @@ fluid.defaults("gpii.tests.ul.images.api.provisioner", {
     },
     listeners: {
         "onCreate.provision": {
-            funcName: "gpii.tests.ul.images.api.provisioner.provision",
+            funcName: "gpii.tests.ul.api.images.provisioner.provision",
             args:     ["{that}"]
         },
         "onDestroy.deprovision": {
-            funcName: "gpii.tests.ul.images.api.provisioner.deprovision",
+            funcName: "gpii.tests.ul.api.images.provisioner.deprovision",
             args:     ["{that}"]
         }
     }

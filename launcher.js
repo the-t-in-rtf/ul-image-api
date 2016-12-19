@@ -9,7 +9,7 @@ require("./");
 
 require("gpii-launcher");
 
-fluid.defaults("gpii.ul.website.launcher", {
+fluid.defaults("gpii.ul.images.launcher", {
     gradeNames: ["gpii.launcher"],
     yargsOptions: {
         describe: {

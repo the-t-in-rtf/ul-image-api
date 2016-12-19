@@ -23,7 +23,7 @@ Scan uploaded images with clamav.
 // # `DELETE /api/images/file/:uid/:source/:image_id`
 // require("./file-delete.js");
 
-fluid.defaults("gpii.ul.images.api.file", {
+fluid.defaults("gpii.ul.api.images.file", {
     gradeNames: ["gpii.express.router"],
     path: "/file",
     events: {
@@ -34,13 +34,13 @@ fluid.defaults("gpii.ul.images.api.file", {
     },
     components: {
         read: {
-            type: "gpii.ul.images.api.file.read",
+            type: "gpii.ul.api.images.file.read",
             options: {
-                originalsDir: "{gpii.ul.images.api}.options.originalsDir",
-                cacheDir:     "{gpii.ul.images.api}.options.cacheDir",
+                originalsDir: "{gpii.ul.api.images}.options.originalsDir",
+                cacheDir:     "{gpii.ul.api.images}.options.cacheDir",
                 listeners: {
                     "onSchemasDereferenced.notifyParent": {
-                        func: "{gpii.ul.images.api.file}.events.onReadReady.fire"
+                        func: "{gpii.ul.api.images.file}.events.onReadReady.fire"
                     }
                 }
             }

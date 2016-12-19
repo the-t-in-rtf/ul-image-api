@@ -1,7 +1,7 @@
 {
   "type": "devConfig",
   "options": {
-    "gradeNames": ["gpii.ul.images.harness"],
+    "gradeNames": ["gpii.tests.ul.api.images.harness"],
     "listeners": {
       "onCreate.constructFixtures": {
         "func": "{that}.events.constructFixtures.fire"

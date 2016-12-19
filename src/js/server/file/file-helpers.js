@@ -5,7 +5,7 @@ var gpii = fluid.registerNamespace("gpii");
 
 var path = require("path");
 
-fluid.registerNamespace("gpii.ul.images.api.file");
+fluid.registerNamespace("gpii.ul.api.images.file");
 
 /**
  *
@@ -16,7 +16,7 @@ fluid.registerNamespace("gpii.ul.images.api.file");
  *
  * @returns {String} A string representing the full resolved path.
  */
-gpii.ul.images.api.file.resolvePath = function (baseDir, segments) {
+gpii.ul.api.images.file.resolvePath = function (baseDir, segments) {
     var resolvedPath = fluid.module.resolvePath(baseDir);
     fluid.each(fluid.makeArray(segments), function (segment) {
         resolvedPath = path.resolve(resolvedPath, segment);

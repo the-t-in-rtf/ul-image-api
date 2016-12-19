@@ -27,23 +27,23 @@ fluid.require("%ul-image-api");
 
 require("./provisioner");
 
-fluid.registerNamespace("gpii.tests.ul.images.api.harness");
+fluid.registerNamespace("gpii.tests.ul.api.images.harness");
 
-gpii.tests.ul.images.api.harness.getOriginalsPath = function (that) {
-    return gpii.tests.ul.images.api.harness.getPath(that, "originals");
+gpii.tests.ul.api.images.harness.getOriginalsPath = function (that) {
+    return gpii.tests.ul.api.images.harness.getPath(that, "originals");
 };
 
-gpii.tests.ul.images.api.harness.getCachePath = function (that) {
-    return gpii.tests.ul.images.api.harness.getPath(that, "cache");
+gpii.tests.ul.api.images.harness.getCachePath = function (that) {
+    return gpii.tests.ul.api.images.harness.getPath(that, "cache");
 };
 
 
-gpii.tests.ul.images.api.harness.getPath = function (that, dirName) {
+gpii.tests.ul.api.images.harness.getPath = function (that, dirName) {
     var uniqueDirName = that.id + "-" + dirName;
-    return gpii.ul.images.api.file.resolvePath(os.tmpDir(), uniqueDirName);
+    return gpii.ul.api.images.file.resolvePath(os.tmpDir(), uniqueDirName);
 };
 
-fluid.defaults("gpii.ul.images.harness", {
+fluid.defaults("gpii.tests.ul.api.images.harness", {
     gradeNames:   ["fluid.component"],
     schemaDirs:   ["%ul-image-api/src/schemas", "%ul-api/src/schemas", "%gpii-express-user/src/schemas"],
     templateDirs: ["%ul-image-api/src/templates", "%ul-api/src/templates", "%gpii-express-user/src/templates", "%gpii-json-schema/src/templates", "%ul-image-api/tests/templates"],
@@ -52,8 +52,8 @@ fluid.defaults("gpii.ul.images.harness", {
         couch:  7318
     },
     sessionKey: "_ul_user",
-    originalsDir: "@expand:gpii.tests.ul.images.api.harness.getOriginalsPath({that})",
-    cacheDir: "@expand:gpii.tests.ul.images.api.harness.getCachePath({that})",
+    originalsDir: "@expand:gpii.tests.ul.api.images.harness.getOriginalsPath({that})",
+    cacheDir: "@expand:gpii.tests.ul.api.images.harness.getCachePath({that})",
     rules: {
         contextToExpose: {
             "layout": "layout", // This is required to support custom layouts
@@ -100,36 +100,6 @@ fluid.defaults("gpii.ul.images.harness", {
             expander: {
                 funcName: "fluid.stringTemplate",
                 args:     ["http://localhost:%port", { port: "{that}.options.ports.api" }]
-            }
-        },
-        login: {
-            expander: {
-                funcName: "fluid.stringTemplate",
-                args:     ["http://localhost:%port/api/user/login", { port: "{that}.options.ports.api" }]
-            }
-        },
-        couch: {
-            expander: {
-                funcName: "fluid.stringTemplate",
-                args:     ["http://localhost:%port/", { port: "{that}.options.ports.couch" }]
-            }
-        },
-        lucene: {
-            expander: {
-                funcName: "fluid.stringTemplate",
-                args:     ["http://localhost:%port/local/%dbName/_design/lucene/by_content", { port: "{that}.options.ports.lucene", dbName: "{that}.options.dbNames.ul"}]
-            }
-        },
-        ulDb: {
-            expander: {
-                funcName: "fluid.stringTemplate",
-                args:     ["http://localhost:%port/%dbName", { port: "{that}.options.ports.couch", dbName: "{that}.options.dbNames.ul"}]
-            }
-        },
-        usersDb: {
-            expander: {
-                funcName: "fluid.stringTemplate",
-                args:     ["http://localhost:%port/%dbName", { port: "{that}.options.ports.couch", dbName: "{that}.options.dbNames.users"}]
             }
         }
     },
@@ -278,7 +248,7 @@ fluid.defaults("gpii.ul.images.harness", {
                         }
                     },
                     imageApi: {
-                        type: "gpii.ul.images.api",
+                        type: "gpii.ul.api.images",
                         options: {
                             priority:     "after:api",
                             templateDirs: "{harness}.options.templateDirs",
@@ -355,7 +325,7 @@ fluid.defaults("gpii.ul.images.harness", {
             }
         },
         provisioner: {
-            type: "gpii.tests.ul.images.api.provisioner",
+            type: "gpii.tests.ul.api.images.provisioner",
             createOnEvent: "constructFixtures",
             options: {
                 originalsDir: "{gpii.ul.images.harness}.options.originalsDir",
