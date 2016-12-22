@@ -4,6 +4,7 @@ var fluid = require("infusion");
 var gpii  = fluid.registerNamespace("gpii");
 
 var mkdirp = require("mkdirp");
+var rimraf = require("rimraf");
 var ncp    = require("ncp");
 
 fluid.registerNamespace("gpii.tests.ul.api.images.provisioner");
@@ -16,7 +17,7 @@ gpii.tests.ul.api.images.provisioner.provision = function (that) {
 
         var promise = fluid.promise();
         promises.push(promise);
-        mkdirp(destDir, function (err) {
+        mkdirp(destPath, function (err) {
             if (err) {
                 promise.reject(err);
             }
@@ -40,8 +41,14 @@ gpii.tests.ul.api.images.provisioner.provision = function (that) {
 };
 
 gpii.tests.ul.api.images.provisioner.deprovision = function (that) {
-    // TODO: Clear out the cache directory
-    // TODO: Clear out the test content
+    fluid.each(that.options.dataToCopy, function (destDir) {
+        fluid.log("Removing test image data from '", destDir, "'...")
+        rimraf(destDir, function (error) {
+            if (error) {
+                fluid.log("Cannot remove test image data:", error);
+            }
+        });
+    });
 };
 
 fluid.defaults("gpii.tests.ul.api.images.provisioner", {

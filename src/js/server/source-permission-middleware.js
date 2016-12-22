@@ -23,7 +23,7 @@ gpii.ul.images.sourcePermissionMiddleware.middleware = function (that, request, 
         next();
     }
     else {
-        response.statusCode(401).send({ isError: true, statusCode: 401, message: that.options.errorMessages.notAuthorized});
+        response.status(401).send({ isError: true, statusCode: 401, message: that.options.errorMessages.notAuthorized});
     }
 };
 

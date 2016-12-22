@@ -22,4 +22,4 @@ fluid.defaults("gpii.ul.images.launcher", {
     }
 });
 
-gpii.ul.website.launcher();
+gpii.ul.images.launcher();

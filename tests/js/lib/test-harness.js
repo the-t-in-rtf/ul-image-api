@@ -51,6 +51,38 @@ fluid.defaults("gpii.tests.ul.api.images.harness", {
         api:    7317,
         couch:  7318
     },
+    urls: {
+        api: {
+            expander: {
+                funcName: "fluid.stringTemplate",
+                args:     ["http://localhost:%port", { port: "{that}.options.ports.api" }]
+            }
+        },
+        couch: {
+            expander: {
+                funcName: "fluid.stringTemplate",
+                args:     ["http://localhost:%port/", { port: "{that}.options.ports.couch" }]
+            }
+        },
+        imageDb: {
+            expander: {
+                funcName: "fluid.stringTemplate",
+                args:     ["http://localhost:%port/%dbName", { port: "{that}.options.ports.couch", dbName: "{that}.options.dbNames.images"}]
+            }
+        },
+        ulDb: {
+            expander: {
+                funcName: "fluid.stringTemplate",
+                args:     ["http://localhost:%port/%dbName", { port: "{that}.options.ports.couch", dbName: "{that}.options.dbNames.ul"}]
+            }
+        },
+        usersDb: {
+            expander: {
+                funcName: "fluid.stringTemplate",
+                args:     ["http://localhost:%port/%dbName", { port: "{that}.options.ports.couch", dbName: "{that}.options.dbNames.users"}]
+            }
+        }
+    },
     sessionKey: "_ul_user",
     originalsDir: "@expand:gpii.tests.ul.api.images.harness.getOriginalsPath({that})",
     cacheDir: "@expand:gpii.tests.ul.api.images.harness.getCachePath({that})",
@@ -95,17 +127,10 @@ fluid.defaults("gpii.tests.ul.api.images.harness", {
             target: "{that gpii.handlebars.dispatcherMiddleware}.options.rules.contextToExpose"
         }
     ],
-    urls: {
-        api: {
-            expander: {
-                funcName: "fluid.stringTemplate",
-                args:     ["http://localhost:%port", { port: "{that}.options.ports.api" }]
-            }
-        }
-    },
     dbNames: {
-        ul:    "ul",
-        users: "users"
+        images: "images",
+        ul:     "ul",
+        users:  "users"
     },
     events: {
         apiReady:           null,
@@ -235,7 +260,7 @@ fluid.defaults("gpii.tests.ul.api.images.harness", {
                         options: {
                             priority: "after:session",
                             templateDirs: "{harness}.options.templateDirs",
-                            urls:     "{harness}.options.urls",
+                            urls: "{harness}.options.urls",
                             listeners: {
                                 "onReady.notifyParent": {
                                     func: "{harness}.events.apiReady.fire"
@@ -253,8 +278,8 @@ fluid.defaults("gpii.tests.ul.api.images.harness", {
                             priority:     "after:api",
                             templateDirs: "{harness}.options.templateDirs",
                             urls:         "{harness}.options.urls",
-                            originalsDir: "{gpii.ul.images.harness}.options.originalsDir",
-                            cacheDir:     "{gpii.ul.images.harness}.options.cacheDir"
+                            originalsDir: "{gpii.tests.ul.api.images.harness}.options.originalsDir",
+                            cacheDir:     "{gpii.tests.ul.api.images.harness}.options.cacheDir"
                         }
                     },
                     dispatcher: {
@@ -328,8 +353,8 @@ fluid.defaults("gpii.tests.ul.api.images.harness", {
             type: "gpii.tests.ul.api.images.provisioner",
             createOnEvent: "constructFixtures",
             options: {
-                originalsDir: "{gpii.ul.images.harness}.options.originalsDir",
-                cacheDir:     "{gpii.ul.images.harness}.options.cacheDir",
+                originalsDir: "{gpii.tests.ul.api.images.harness}.options.originalsDir",
+                cacheDir:     "{gpii.tests.ul.api.images.harness}.options.cacheDir",
                 listeners: {
                     "onProvisioned.notifyParent": {
                         func: "{harness}.events.provisionerStarted.fire"
@@ -340,8 +365,8 @@ fluid.defaults("gpii.tests.ul.api.images.harness", {
     }
 });
 
-fluid.defaults("gpii.tests.ul.website.harness.instrumented", {
-    gradeNames: ["gpii.tests.ul.website.harness"],
+fluid.defaults("gpii.tests.ul.api.images.harness.instrumented", {
+    gradeNames: ["gpii.tests.ul.api.images.harness"],
     components: {
         express: {
             options: {

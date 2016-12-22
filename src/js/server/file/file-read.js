@@ -13,10 +13,12 @@
 
  */
 "use strict";
-var fluid = require("infusion");
-var gpii = fluid.registerNamespace("gpii");
+var fluid  = require("infusion");
+var gpii   = fluid.registerNamespace("gpii");
 
-var fs = require("fs");
+var fs     = require("fs");
+var sharp  = require("sharp");
+var mkdirp = require("mkdirp");
 
 fluid.require("%gpii-express");
 fluid.require("%gpii-json-schema");
@@ -33,8 +35,12 @@ gpii.ul.api.images.file.read.handler.checkQueryParams = function (that) {
     if (userOptions.width) {
         // If we have height/width params, check to see if we already have a resized file
         // /api/images/file/:uid/:source/:width/:image_id
-        var segments         = [ userOptions.uid, userOptions.source,  userOptions.width, userOptions.image_id ];
-        var resizedFilePath  = gpii.ul.api.images.file.resolvePath(that.options.cacheDir, segments);
+        var originalSegments  = [ userOptions.uid, userOptions.source,  userOptions.image_id ];
+        var originalFilePath  = gpii.ul.api.images.file.resolvePath(that.options.originalsDir, originalSegments);
+
+        var resizedDirSegments = [ userOptions.uid, userOptions.source,  userOptions.width];
+        var resizedDirPath     = gpii.ul.api.images.file.resolvePath(that.options.cacheDir, resizedDirSegments);
+        var resizedFilePath    = gpii.ul.api.images.file.resolvePath(resizedDirPath, userOptions.image_id );
 
         // If a resized file exists, defer to the static middleware
         if (fs.existsSync(resizedFilePath)) {
@@ -42,9 +48,36 @@ gpii.ul.api.images.file.read.handler.checkQueryParams = function (that) {
         }
         // If we don't have a resized file, create one.
         else {
-            that.sendResponse(501, { isError: true, message: "This endpoint has not been implemented yet."});
-            // TODO: Implement this
-            // Resize the image, save it, then defer to the static middleware.
+            if (fs.existsSync(originalFilePath)) {
+                mkdirp(resizedDirPath, function (err) {
+                    if (err) {
+                        that.sendResponse(500, { isError: true, message: that.options.messages.mkdirError });
+                    }
+                    else {
+                        try {
+                            var tileSize = parseInt(userOptions.width, 10);
+                            sharp(originalFilePath)
+                                .resize(tileSize, tileSize) // Create a square tile
+                                .background({r: 0, g: 0, b: 0, alpha: 0}) // Fill out the square using transparent pixels
+                                .embed() // embed the original image within the square tile rather than changing its aspect ratio.
+                                .toFile(resizedFilePath, function (error) {
+                                    if (error) {
+                                        that.sendResponse(500, { isError: true, message: that.options.messages.saveError });
+                                    }
+                                    else {
+                                        that.options.next(); // If we've made it this far, we can defer to the static middleware.
+                                    }
+                                });
+                        }
+                        catch (error) {
+                            that.sendResponse(500, { isError: true, message: that.options.messages.resizeError });
+                        }
+                    }
+                });
+            }
+            else {
+                that.sendResponse(404, { isError: true, message: that.options.messages.fileNotFound});
+            }
         }
     }
     // For original unaltered images, defer to the static middleware
@@ -55,6 +88,12 @@ gpii.ul.api.images.file.read.handler.checkQueryParams = function (that) {
 
 fluid.defaults("gpii.ul.api.images.file.read.handler", {
     gradeNames: ["gpii.express.handler"],
+    messages: {
+        fileNotFound: "Can't find an original image to resize.",
+        mkdirError:   "Error creating directory to hold original image",
+        resizeError:  "Error resizing original image.",
+        saveError:    "Error saving resized image to disk."
+    },
     invokers: {
         handleRequest: {
             funcName: "gpii.ul.api.images.file.read.handler.checkQueryParams",
@@ -91,6 +130,10 @@ fluid.defaults("gpii.ul.api.images.file.read", {
         {
             source: "{that}.options.cacheDir",
             target: "{that gpii.express.handler}.options.cacheDir"
+        },
+        {
+            source: "{that}.options.originalsDir",
+            target: "{that gpii.express.handler}.options.originalsDir"
         }
     ],
     components: {
@@ -101,7 +144,7 @@ fluid.defaults("gpii.ul.api.images.file.read", {
                 priority: "first"
             }
         },
-        // JSON Schema validation middleware to check for required parameters.
+        // Reject requests that have missing or bad data up front.
         validationMiddleware: {
             type: "gpii.schema.validationMiddleware",
             options: {

@@ -12,7 +12,8 @@
     "gpii-json-schema": "1.0.0-dev.20161124T134646Z.cd96ab8",
     "infusion": "2.0.0",
     "mkdirp": "0.5.1",
-    "ncp": "2.0.0"
+    "ncp": "2.0.0",
+    "sharp": "0.17.0"
   },
   "devDependencies": {
     "eslint": "3.10.2",
@@ -30,6 +31,7 @@
     "kettle": "1.2.2",
     "node-jqunit": "1.1.4",
     "request": "2.79.0",
+    "rimraf": "2.5.4",
     "ul-api": "git://github.com/the-t-in-rtf/ul-api.git#b709372d4fa69f46f2b3b50b01bce548189ccbc2"
   }
 }

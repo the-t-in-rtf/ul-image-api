@@ -251,26 +251,30 @@ identical to `GET /api/images/unified/:uid` (see above).
 If the HTTP `Accept` header is set to `application/json`, a JSON record like the following will be returned:
 
 ```
-[
-  {
+{
     "uid": "1421059432806-826608318",
     "source": "unified",
-    "image_id": "12345",
-    "description": "A picture that no one can object to.",
-    "copyright": "(c) 2016 Jane P. Hoto, Licensed under Creative Commons Attribution 4.0 International",
-    "filename": "totally-fine.jpg",
-    "uri": "http://server.name/api/images/file/unified/12345"
-  },
-  {
-    "uid": "1421059432806-826608318",
-    "source": "unified",
-    "image_id": "12346",
-    "description": "Another picture that no one can object to.",
-    "copyright": "(c) 2016 Jane P. Hoto, Licensed under Creative Commons Attribution 4.0 International",
-    "filename": "also-fine.jpg",
-    "uri": "http://server.name/api/images/file/unified/12346"
-  }
-]
+    "images": [
+      {
+        "uid": "1421059432806-826608318",
+        "source": "unified",
+        "image_id": "12345",
+        "description": "A picture that no one can object to.",
+        "copyright": "(c) 2016 Jane P. Hoto, Licensed under Creative Commons Attribution 4.0 International",
+        "filename": "totally-fine.jpg",
+        "uri": "http://server.name/api/images/file/unified/12345"
+      },
+      {
+        "uid": "1421059432806-826608318",
+        "source": "unified",
+        "image_id": "12346",
+        "description": "Another picture that no one can object to.",
+        "copyright": "(c) 2016 Jane P. Hoto, Licensed under Creative Commons Attribution 4.0 International",
+        "filename": "also-fine.jpg",
+        "uri": "http://server.name/api/images/file/unified/12346"
+      }
+    ]
+}
 ```
 Otherwise, a rendered HTML page will be returned.  If the user is logged in, this page will include controls to
 contribute metadata and new images.   If the user is a reviewer, this page will include controls to change which
