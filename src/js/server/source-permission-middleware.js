@@ -19,7 +19,7 @@ gpii.ul.images.sourcePermissionMiddleware.middleware = function (that, request, 
     var user = request.session && request.session[that.options.sessionKey];
     var source = fluid.model.transformWithRules(request, that.options.rules.sourceFromRequest);
     var authorizedSources = gpii.ul.api.sources.request.listSources(gpii.ul.api.sources.sources, user, that.options.permission);
-    if (source && authorizedSources.indexOf(source) !== -1) {
+    if (!source || Object.keys(source).length === 0 || authorizedSources.indexOf(source) !== -1) {
         next();
     }
     else {
