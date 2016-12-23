@@ -77,7 +77,7 @@ fluid.defaults("gpii.ul.images.dataSources.couch", {
     },
     rules: {
         getRecords: gpii.ul.images.dataSources.couch.rules.getRecords.bulk,
-        transformRecord: gpii.ul.images.dataSources.couch.rules.transformRecord.stripFields
+        transformRecord: gpii.ul.images.dataSources.couch.rules.transformRecord.metadata
     },
     url: {
         expander: {

@@ -40,7 +40,9 @@ gpii.test.ul.api.images.dataSource.caseHolder.checkBulkRecords = function (messa
     jqUnit.assertEquals(message + " (there should be no couchisms)", 0, couchisms);
 };
 // TODO: Test a 404
-
+gpii.test.ul.api.images.dataSource.caseHolder.checkFourOhFour = function (response) {
+    fluid.fail("write something here");
+};
 
 fluid.defaults("gpii.test.ul.api.images.dataSource.caseHolder", {
     gradeNames: ["fluid.test.testCaseHolder"],
@@ -104,6 +106,35 @@ fluid.defaults("gpii.test.ul.api.images.dataSource.caseHolder", {
                         listener: "fluid.identity"
                     }
                 ]
+            },
+            {
+                name: "Test handling of 404 responses...",
+                sequence: [
+                    // TODO:  Convert to using sequences once we verify our approach in the login tests.
+                    {
+                        func: "{testEnvironment}.events.constructFixtures.fire"
+                    },
+                    {
+                        event:    "{testEnvironment}.events.onFixturesConstructed",
+                        listener: "fluid.identity"
+                    },
+                    {
+                        func: "{fourOhFourSource}.get",
+                        args: []
+                    },
+                    {
+                        event:    "{fourOhFourSource}.events.onError",
+                        listener: "gpii.test.ul.api.images.dataSource.caseHolder.checkFourOhFour",
+                        args:     ["{arguments}.0", "{fourOhFourSource}"] // response, dataSource
+                    },
+                    {
+                        func: "{gpii.tests.ul.api.images.harness}.events.stopFixtures.fire"
+                    },
+                    {
+                        event:    "{testEnvironment}.events.onFixturesStopped",
+                        listener: "fluid.identity"
+                    }
+                ]
             }
         ]
     }],
@@ -144,6 +175,17 @@ fluid.defaults("gpii.test.ul.api.images.dataSource.caseHolder", {
                 endpoint: "/_design/metadata/_view/combined",
                 rules: {
                     getRecords: gpii.ul.images.dataSources.couch.rules.getRecords.bulk,
+                    transformRecord: gpii.ul.images.dataSources.couch.rules.transformRecord.metadata
+                }
+            }
+        },
+        // This is not really testing anything new, only providing an example of how to get the status code from a kettle.datasource.URL
+        fourOhFourSource: {
+            type: "gpii.tests.ul.api.images.dataSource.dataSource",
+            options: {
+                endpoint: "/four/oh/four",
+                rules: {
+                    getRecords: gpii.ul.images.dataSources.couch.rules.getRecords.single,
                     transformRecord: gpii.ul.images.dataSources.couch.rules.transformRecord.metadata
                 }
             }
