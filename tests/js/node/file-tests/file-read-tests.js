@@ -10,6 +10,9 @@
 */
 "use strict";
 var fluid = require("infusion");
+fluid.loadTestingSupport();
+
+require("node-jqunit");
 
 require("../../lib/request");
 require("../../lib/common-sequences");
@@ -45,7 +48,7 @@ fluid.defaults("gpii.tests.ul.api.images.file.sequences.anonymous.loadUnifiedOri
     // TODO:  Talk with Antranig about distributing cookie jar to elements.
     // gradeNames: ["gpii.tests.ul.api.images.sequences.standardStartupAndShutdown", "gpii.tests.ul.api.images.hasCookieJar"],
     gradeNames: ["gpii.tests.ul.api.images.sequences.standardStartupAndShutdown"],
-    elements: {
+    sequenceElements: {
         loadUnifiedOriginal: {
             gradeNames: "gpii.tests.ul.api.images.file.elements.loadUnifiedOriginal",
             priority:   "after:startup"

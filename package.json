@@ -32,6 +32,6 @@
     "node-jqunit": "1.1.4",
     "request": "2.79.0",
     "rimraf": "2.5.4",
-    "ul-api": "git://github.com/the-t-in-rtf/ul-api.git#b709372d4fa69f46f2b3b50b01bce548189ccbc2"
+    "ul-api": "git://github.com/the-t-in-rtf/ul-api.git#10bc777d15c2b3dee09cd7b1a3f733bd18a16407"
   }
 }

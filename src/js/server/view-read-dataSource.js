@@ -50,7 +50,6 @@ gpii.ul.images.dataSources.couch.rules = {
     transformRecord: {
         gallery: {
             "uid":    "uid",
-            "source": "source",
             "images": "images"
         },
         metadata: {

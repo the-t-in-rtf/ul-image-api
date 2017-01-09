@@ -5,17 +5,11 @@ fluid.require("%gpii-express");
 
 require("./file");
 require("./metadata");
+require("./gallery");
 
 /*
 
  TODO: Implement each of these
-
-// TODO:  All must strip "type", "_id", and "_rev" from the raw couch records
- # `GET /api/images/gallery/:uid`
-// 1. lookup using gallery view: http://localhost:7318/images/_design/gallery/_view/byUid?key=%221421059432806-826608318%22
-// 2. resolve individual image metadata records:
- // See: http://ryankirkman.com/2011/03/30/advanced-filtering-with-couchdb-views.html
-// http://localhost:7318/images/_design/metadata/_view/combined?startkey=[%221421059432806-826608318%22,%20%22unified%22]&endkey=[%221421059432806-826608318%22,%20%22unified%22,%20{}]
 
  // TODO:  All must strip "type", "_id", and "_rev" from the raw couch records
  # `GET /api/images/reports`
@@ -28,10 +22,6 @@ require("./metadata");
 
 
  # `POST /api/images/file/:uid/:source/:image_id`
-
- // TODO:  All must add "type: gallery" to the incoming records
- # `PUT /api/images/gallery/:uid`
- # `DELETE /api/images/gallery/:uid`
 
  # `PUT /api/images/approve`
  # `PUT /api/images/reject`
@@ -46,11 +36,13 @@ fluid.defaults("gpii.ul.api.images", {
     path: "/api/images",
     method: "use",
     events: {
-        onFileEndpointReady: null,
+        onFileEndpointReady:     null,
+        onGalleryEndpointReady:  null,
         onMetadataEndpointReady: null,
         // Various child middleware isn't ready until JSON Schemas are resolved, all are rolled up here.
         onReady: {
             onFileEndpointReady:     "onFileEndpointReady",
+            onGalleryEndpointReady:  "onGalleryEndpointReady",
             onMetadataEndpointReady: "onMetadataEndpointReady"
         }
     },
@@ -61,6 +53,16 @@ fluid.defaults("gpii.ul.api.images", {
                 listeners: {
                     "onReady.notifyParent": {
                         func: "{gpii.ul.api.images}.events.onFileEndpointReady.fire"
+                    }
+                }
+            }
+        },
+        gallery: {
+            type: "gpii.ul.api.images.gallery",
+            options: {
+                listeners: {
+                    "onReady.notifyParent": {
+                        func: "{gpii.ul.api.images}.events.onGalleryEndpointReady.fire"
                     }
                 }
             }

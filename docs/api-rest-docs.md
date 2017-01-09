@@ -253,7 +253,6 @@ If the HTTP `Accept` header is set to `application/json`, a JSON record like the
 ```
 {
     "uid": "1421059432806-826608318",
-    "source": "unified",
     "images": [
       {
         "uid": "1421059432806-826608318",

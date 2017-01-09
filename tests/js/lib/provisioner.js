@@ -22,7 +22,7 @@ gpii.tests.ul.api.images.provisioner.provision = function (that) {
                 promise.reject(err);
             }
             else {
-                fluid.log("Copying test data from '", sourcePath, "' to '", destPath, "'.")
+                fluid.log("Copying test data from '", sourcePath, "' to '", destPath, "'.");
                 // Copy our pregenerated test data in place
                 ncp(sourcePath, destPath, function (err) {
                     if (err) {
@@ -42,7 +42,7 @@ gpii.tests.ul.api.images.provisioner.provision = function (that) {
 
 gpii.tests.ul.api.images.provisioner.deprovision = function (that) {
     fluid.each(that.options.dataToCopy, function (destDir) {
-        fluid.log("Removing test image data from '", destDir, "'...")
+        fluid.log("Removing test image data from '", destDir, "'...");
         rimraf(destDir, function (error) {
             if (error) {
                 fluid.log("Cannot remove test image data:", error);

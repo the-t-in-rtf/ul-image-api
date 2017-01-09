@@ -149,11 +149,9 @@ fluid.defaults("gpii.ul.api.images.metadata.read.handler", {
     }
 });
 
-fluid.defaults("gpii.ul.api.images.metadata.read", {
-    gradeNames: ["gpii.express.router", "gpii.hasRequiredOptions"],
+fluid.defaults("gpii.ul.api.images.metadata.read.base", {
+    gradeNames: ["gpii.express.router"],
     method: ["get"],
-    requiredFields: {
-    },
     // Support all variations, including those with missing URL params so that we can return appropriate error feedback.
     path: ["/:uid/:source/:image_id", "/:uid/:source", "/:uid", "/"],
     routerOptions: {
@@ -171,14 +169,6 @@ fluid.defaults("gpii.ul.api.images.metadata.read", {
         {
             source: "{that}.options.rules",
             target: "{that gpii.express.handler}.options.rules"
-        },
-        {
-            source: "{that}.options.cacheDir",
-            target: "{that gpii.express.handler}.options.cacheDir"
-        },
-        {
-            source: "{that}.options.originalsDir",
-            target: "{that gpii.express.handler}.options.originalsDir"
         }
     ],
     components: {
@@ -196,14 +186,20 @@ fluid.defaults("gpii.ul.api.images.metadata.read", {
                 priority: "after:permissionMiddleware",
                 schemaDirs: "%ul-image-api/src/schemas",
                 schemaKey:  "metadata-read-input.json",
-                rules: "{gpii.ul.api.images.metadata.read}.options.rules",
+                rules: "{gpii.ul.api.images.metadata.read.base}.options.rules",
                 listeners: {
                     "onSchemasDereferenced.notifyParent": {
-                        func: "{gpii.ul.api.images.metadata.read}.events.onSchemasDereferenced.fire"
+                        func: "{gpii.ul.api.images.metadata.read.base}.events.onSchemasDereferenced.fire"
                     }
                 }
             }
-        },
+        }
+    }
+});
+
+fluid.defaults("gpii.ul.api.images.metadata.read", {
+    gradeNames: ["gpii.ul.api.images.metadata.read.base"],
+    components: {
         // If our request is valid, handle it normally.
         metadataMiddleware: {
             type: "gpii.express.middleware.requestAware",

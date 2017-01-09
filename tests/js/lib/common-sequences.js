@@ -76,7 +76,7 @@ fluid.defaults("gpii.tests.ul.api.images.elements.loadAndCheck", {
         request: {
             type: "gpii.tests.ul.api.images.request",
             options: {
-                endpoint: "{}.options.endpoint"
+                endpoint: "{gpii.tests.ul.api.images.elements.loadAndCheck}.options.endpoint"
             }
         }
     }
@@ -103,7 +103,7 @@ fluid.defaults("gpii.tests.ul.api.images.elements.login", {
 // A sequence that allows you to insert your tests between the standard "startup" and "shutdown" steps.
 fluid.defaults("gpii.tests.ul.api.images.sequences.standardStartupAndShutdown", {
     gradeNames: ["fluid.test.sequence"],
-    elements: {
+    sequenceElements: {
         startup: {
             gradeNames: ["gpii.tests.ul.api.images.elements.startup"],
             priority: "first"
@@ -137,7 +137,7 @@ fluid.defaults("gpii.tests.ul.api.images.hasCookieJar", {
  */
 fluid.defaults("gpii.tests.ul.api.images.sequences.requiresLogin", {
     gradeNames: ["gpii.tests.ul.api.images.sequences.standardStartupAndShutdown", "gpii.tests.ul.api.images.hasCookieJar"],
-    elements: {
+    sequenceElements: {
         login: {
             gradeNames: "gpii.tests.ul.api.images.elements.login",
             priority: "after:startup"
