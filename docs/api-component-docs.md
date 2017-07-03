@@ -1,4 +1,4 @@
-# API  Component Documentation.
+# UL Image API Component Documentation.
 
 This page documents the back-end components that power the UL Image API.
 

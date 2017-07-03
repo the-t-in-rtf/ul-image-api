@@ -8,7 +8,7 @@ var request = require("request");
 fluid.registerNamespace("gpii.ul.image");
 
 gpii.ul.image.generateSingleRequestPromise = function (uid, url) {
-    return function() {
+    return function () {
         var promise = fluid.promise();
 
         request.head(url, function (error, response) {
@@ -21,7 +21,7 @@ gpii.ul.image.generateSingleRequestPromise = function (uid, url) {
         });
 
         return promise;
-    }
+    };
 };
 
 gpii.ul.image.generateThrottlingPromise = function() {
@@ -29,7 +29,7 @@ gpii.ul.image.generateThrottlingPromise = function() {
         var promise = fluid.promise();
         setTimeout(promise.resolve, 250);
         return promise;
-    }
+    };
 };
 
 gpii.ul.image.getImageMetadata = function (onResolve, onReject) {
@@ -38,10 +38,7 @@ gpii.ul.image.getImageMetadata = function (onResolve, onReject) {
     var promises = [];
     fluid.each(imageData.rows, function (imageDef) {
 
-        var output = [ imageDef.key ];
-
         fluid.each(["ImageUrl"], function (field) {
-        // fluid.each(["ImageUrl", "ThumbnailImageUrl"], function (field) {
             var url = imageDef.value[field];
             if (url && url.length) {
                 promises.push(gpii.ul.image.generateSingleRequestPromise(imageDef.key, url));

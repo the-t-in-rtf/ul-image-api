@@ -37,6 +37,7 @@ In addition to checking HTTP status codes, you can use the `isError` property to
     + `uid` (required) ... The unique ID of the Unified Listing entry associated with this image.
     + `source` (required) ... The data source (see "Source Permissions" above) to associate this image with.
     + `image_id` (required) .. The ID of this image, as returned by `GET /api/images/file/gallery` (see below) or `POST /api/images/metadata/:uid/:source` (see below).
+    + `uri` .. The URI where this image was originally located.
 
 Add a single image file that is associated with the Unified Listing with the unique identifier `uid`, and with a given
 data source (see above).  You must be logged in and have permission to write to `:source` (see "Source Permissions"

@@ -6,7 +6,7 @@ and other endpoints to function properly.
 If you do not already have these views installed, you can simply upload them using a utility like `curl` and a command
 like the following:
 
-`for file in *.json; do curl -X POST -H Content-Type application/json -d @$file http://username:password@hostname:port/db/; done`
+`for file in *.json; do curl -X POST -H "Content-Type: application/json" -d @$file http://username:password@hostname:port/db/_bulk_docs; done`
 
 # Updating the Views
 

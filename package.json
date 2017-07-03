@@ -21,7 +21,7 @@
     "fluid-grunt-eslint": "18.1.2",
     "foundation-sites": "6.2.4",
     "gpii-binder": "1.0.0-dev.20161123T123137Z.a776add",
-    "gpii-express-user": "git://github.com/the-t-in-rtf/gpii-express-user.git#df88d54741a203f11bd962966252f1389108a694",
+    "gpii-express-user": "1.0.0-dev.20170106T160645Z.999394e",
     "gpii-launcher": "1.0.0-dev.20161125T160059Z.e8f50d4",
     "gpii-location-bar-relay": "1.0.0-dev.20161125T161722Z.5d4d48c",
     "gpii-pouchdb": "1.0.0",
@@ -32,6 +32,6 @@
     "node-jqunit": "1.1.4",
     "request": "2.79.0",
     "rimraf": "2.5.4",
-    "ul-api": "git://github.com/the-t-in-rtf/ul-api.git#10bc777d15c2b3dee09cd7b1a3f733bd18a16407"
+    "ul-api": "1.0.0-dev.20170109T161536Z.ddb379d"
   }
 }

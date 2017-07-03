@@ -1,3 +1,4 @@
+// One-off script to download images from EASTIN and the SAI
 "use strict";
 var fluid = require("infusion");
 var gpii = fluid.registerNamespace("gpii");
@@ -11,7 +12,7 @@ gpii.ul.image.generateSingleRequestPromise = function (uid, url) {
     return function () {
         var promise = fluid.promise();
 
-        request.head(url, function (error, response) {
+        request.get(url, function (error, response) {
             if (error) {
                 promise.resolve({ isError: true, code: error.code, message: error.message});
             }
@@ -24,7 +25,7 @@ gpii.ul.image.generateSingleRequestPromise = function (uid, url) {
     };
 };
 
-gpii.ul.image.generateThrottlingPromise = function() {
+gpii.ul.image.generateThrottlingPromise = function () {
     return function () {
         var promise = fluid.promise();
         setTimeout(promise.resolve, 250);

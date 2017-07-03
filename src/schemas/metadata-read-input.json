@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "id":      "metadata-read-input.json",
-  "title":   "metadata 'read' input schema",
+  "title":   "UL Image API metadata 'read' input schema",
   "type":    "object",
   "definitions": {
     "uid": {

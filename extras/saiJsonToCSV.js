@@ -22,11 +22,37 @@ var fs = require("fs");
  },
  */
 
+fluid.registerNamespace("gpii.ul.api.images");
+gpii.ul.api.images.fandr = function (value, transformSpec) {
+    if (transformSpec.find && transformSpec.replace) {
+        return value.replace(transformSpec.find, transformSpec.replace);
+    }
+    else {
+        return value;
+    }
+};
+
 var rules = {
     "uid":   "uid",
-    "url":   "product_image.uri",
+    "url":   {
+        transform: {
+            type:      "gpii.ul.api.images.fandr",
+            inputPath: "product_image.uri",
+            find:      "public://",
+            replace:   "http://staging.saa.gpii.net/api/v1/products"
+        }
+    },
+    "fid": "product_image.fid",
+    "type":  "product_image.filemime",
     "bytes": "product_image.filesize",
-    "type":  "product_image.filemime"
+    "filename":   {
+        transform: {
+            type:      "gpii.ul.api.images.fandr",
+            inputPath: "product_image.uri",
+            find:      /.+\/([^/]+)/,
+            replace:   "$1"
+        }
+    }
 };
 
 var transformedData = fluid.transform(content, function (record) {
@@ -35,7 +61,7 @@ var transformedData = fluid.transform(content, function (record) {
 
 // I was debating concatenation strategies here and ran across a good tool to compare approaches: https://jsperf.com/string-concatenation/14
 // basically, initialize a string, then use += in modern browsers.
-var output = "uid,url,bytes,type\n";
+var output = Object.keys(rules) + "\n";
 fluid.each(transformedData, function (record) {
     if (record.url) {
         output += "\"" + fluid.values(record).join("\",\"") + "\"\n";
